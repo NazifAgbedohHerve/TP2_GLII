@@ -1,6 +1,6 @@
 using System;
 
-public class Bande-Annonce {
+public class BandeAnnonce {
 	private String numéro;
 	private String durée;
 	private String bande;
