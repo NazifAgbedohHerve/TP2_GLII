@@ -18,6 +18,7 @@ namespace TP2_GLII.Model
         public AbonnementPlan AbonnementPlan { get => abonnementPlan; set => abonnementPlan = value; }
         public Paiement[] Génère { get => génère; set => génère = value; }
         public Membre A_Actuellement { get => a_actuellement; set => a_actuellement = value; }
+        public string Statut { get; internal set; }
 
         // Vérifie la règle UML : pas de chevauchement d’abonnement
         public bool Chevauche(TxAbonnement autre)

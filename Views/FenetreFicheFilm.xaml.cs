@@ -18,41 +18,50 @@ namespace TP2_GLII.Views
     public partial class FenetreFicheFilm : Window
     {
         private Film film;
+        private Membre membre;
 
-        public FenetreFicheFilm(Film film)
+        public FenetreFicheFilm(Film filmSelectionne, Membre membreConnecte)
         {
             InitializeComponent();
-            this.film = film;
-
-            // Remplissage des champs
-            txtTitre.Text = film.Titre;
-            txtCategorie.Text = film.Appartient != null && film.Appartient.Length > 0
-                ? film.Appartient[0].NomCategorie
-                : "Catégorie non spécifiée";
-            txtAnnee.Text = $"Année de sortie : {film.AnnéeSortie}";
-            txtDuree.Text = $"Durée : {film.Durée}";
-            txtPrix.Text = $"Prix : {film.Prix} $";
-            txtSynopsis.Text = film.Synopsis;
-
-            // Actions boutons
-            BtnRetour.Click += (s, e) => { new FenetreCatalogue().Show(); this.Close(); };
-            BtnVisionner.Click += BtnVisionner_Click;
+            film = filmSelectionne;
+            membre = membreConnecte;
+            ChargerFicheFilm();
         }
 
-        private void BtnVisionner_Click(object sender, RoutedEventArgs e)
+        private void ChargerFicheFilm()
         {
-            if (DataStore.MembreConnecte == null)
+            if (film == null) return;
+
+            txtTitreFilm.Text = film.Titre;
+            txtInfosFilm.Text = $"{film.AnnéeSortie}  •  {string.Join(", ", film.Appartient.Select(c => c.NomCategorie))}";
+            txtSynopsis.Text = film.Synopsis;
+
+            // Charger les crédits
+            lstCredits.Items.Clear();
+            if (film.CréditFilm != null)
             {
-                MessageBox.Show("Vous devez être membre pour visionner ce film.", "Accès restreint",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
-                new FenetreInscription().Show();
-                this.Close();
+                foreach (var credit in film.CréditFilm)
+                {
+                    string texte = $"{credit.Rôle} : {credit.Personne?.Nom}";
+                    lstCredits.Items.Add(texte);
+                }
             }
             else
             {
-                new FenetreVisionnement(film).Show();
-                this.Close();
+                lstCredits.Items.Add("(Aucun crédit disponible)");
             }
+        }
+
+        //  Ouvre la fenêtre de visionnement
+        private void btnVisionner_Click(object sender, RoutedEventArgs e)
+        {
+            var fenetreVisionnement = new FenetreVisionnement(film, membre);
+            fenetreVisionnement.ShowDialog();
+        }
+
+        private void btnFermer_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
