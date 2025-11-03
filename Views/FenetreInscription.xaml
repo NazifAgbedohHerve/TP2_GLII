@@ -5,8 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TP2_GLII.Views"
         mc:Ignorable="d"
-        Title="FenetreInscription" Height="450" Width="800">
+        Title="FenetreInscription" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="Black"
+        ResizeMode="NoResize">
     <Grid>
-        
+        <!-- Image de fond -->
+        <Image Source="pack://application:,,,/Images/background_signup.jpg"
+               Stretch="Fill" Opacity="0.3"/>
+
+        <!-- Conteneur principal -->
+        <Border Background="#181818"
+                CornerRadius="10"
+                Padding="40"
+                Width="420"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity="0.95">
+
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <TextBlock Text="Créer un compte membre"
+                               FontSize="24"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               TextAlignment="Center"
+                               Margin="0,0,0,25"/>
+
+                    <!-- Nom -->
+                    <TextBlock Text="Nom" Foreground="LightGray"/>
+                    <TextBox x:Name="txtNom" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Prénom -->
+                    <TextBlock Text="Prénom" Foreground="LightGray"/>
+                    <TextBox x:Name="txtPrenom" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Adresse -->
+                    <TextBlock Text="Adresse" Foreground="LightGray"/>
+                    <TextBox x:Name="txtAdresse" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Téléphone -->
+                    <TextBlock Text="Téléphone" Foreground="LightGray"/>
+                    <TextBox x:Name="txtTelephone" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Courriel -->
+                    <TextBlock Text="Adresse courriel" Foreground="LightGray"/>
+                    <TextBox x:Name="txtCourriel" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Nom d'usager -->
+                    <TextBlock Text="Nom d'usager" Foreground="LightGray"/>
+                    <TextBox x:Name="txtNomUsager" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Mot de passe -->
+                    <TextBlock Text="Mot de passe" Foreground="LightGray"/>
+                    <PasswordBox x:Name="txtMotDePasse" Height="30" Margin="0,0,0,10"/>
+
+                    <!-- Langue préférée -->
+                    <TextBlock Text="Langue préférée" Foreground="LightGray"/>
+                    <ComboBox x:Name="cbLangue" Height="30" Margin="0,0,0,10">
+                        <ComboBoxItem Content="Français"/>
+                        <ComboBoxItem Content="Anglais"/>
+                        <ComboBoxItem Content="Espagnol"/>
+                    </ComboBox>
+
+                    <!-- Notifications -->
+                    <CheckBox x:Name="chkNotif" Content="Recevoir des notifications" Foreground="LightGray" Margin="0,10"/>
+
+                    <!-- Boutons -->
+                    <Button x:Name="BtnCreer" Content="Créer mon compte"
+                            Background="#E50914"
+                            Foreground="White"
+                            BorderBrush="Transparent"
+                            Height="40" Margin="0,15,0,5"
+                            FontWeight="Bold" Cursor="Hand"/>
+                    <Button x:Name="BtnRetour" Content="Retour"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="Gray"
+                            Height="35" Cursor="Hand"/>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Window>

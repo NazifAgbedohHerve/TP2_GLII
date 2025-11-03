@@ -20,6 +20,17 @@ namespace TP2_GLII.Model
         public Membre A_Actuellement { get => a_actuellement; set => a_actuellement = value; }
         public string Statut { get; internal set; }
 
+        public string TypeAbonnement
+        {
+            get
+            {
+                if (AbonnementPlan != null)
+                    return AbonnementPlan.Nom; 
+                return "Non spécifié";
+            }
+        }
+
+
         // Vérifie la règle UML : pas de chevauchement d’abonnement
         public bool Chevauche(TxAbonnement autre)
         {

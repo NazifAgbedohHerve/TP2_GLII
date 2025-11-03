@@ -14,6 +14,14 @@ public class Personne {
     public TypePersonne TypePersonne { get => typePersonne; set => typePersonne = value; }
     public List<CréditFilm> CréditFilm { get => créditFilm; set => créditFilm = value; }
 
+    public Personne(string numero, string nom, string pays, TypePersonne type)
+    {
+        Numéro = numero;
+        Nom = nom;
+        Pays = pays;
+        TypePersonne = type;
+    }
+
     public override string ToString() => $"{Nom} ({TypePersonne})";
 
 }

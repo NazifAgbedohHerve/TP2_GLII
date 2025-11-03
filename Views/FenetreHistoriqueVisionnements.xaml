@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TP2_GLII.Views"
         mc:Ignorable="d"
-        Title="FenetreHistoriqueVisionnements" Height="450" Width="800">
-    <Grid>
-        
+        Title="Historique des visionnements" Height="520" Width="820"
+WindowStartupLocation="CenterScreen" Background="Black">
+    <Grid Margin="12">
+        <TextBlock Text="Historique des visionnements" FontSize="20" FontWeight="Bold" Foreground="White" />
+                <ListView x:Name="lvHistorique" Margin="0,40,0,12">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Date" Width="160" DisplayMemberBinding="{Binding Date}" />
+                            <GridViewColumn Header="Film" Width="320" DisplayMemberBinding="{Binding Film.Titre}" />
+                            <GridViewColumn Header="Mode" Width="120" DisplayMemberBinding="{Binding ModeAccesString}" />
+                            <GridViewColumn Header="Montant" Width="120" DisplayMemberBinding="{Binding PaiementMontant}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,10">
+                    <Button x:Name="BtnRetour" Content="Retour" Width="120" Height="36" Margin="6" />
+                    <Button x:Name="BtnDetails" Content="Voir détails" Width="120" Height="36" Margin="6" />
+                </StackPanel>
+            
+
+
     </Grid>
 </Window>

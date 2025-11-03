@@ -50,9 +50,11 @@ namespace TP2_GLII.Model
 
         public void AjouterTransaction(Transaction tx)
         {
-            if (tx != null)
-                transactions.Add(tx);
+            if (Transactions == null)
+                Transactions = new List<Transaction>();
+            Transactions.Add(tx);
         }
+
 
         public override string ToString()
         {
