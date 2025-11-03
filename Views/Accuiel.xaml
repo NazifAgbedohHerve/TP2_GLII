@@ -6,7 +6,45 @@
         xmlns:local="clr-namespace:TP2_GLII.Views"
         mc:Ignorable="d"
         Title="Accuiel" Height="450" Width="800">
-    <Grid>
+    
         
-    </Grid>
+
+            <Grid>
+                <!-- Image de fond -->
+                <Image Source="pack://application:,,,/Assets/background.jpg" 
+               Stretch="Fill" Opacity="0.35"/>
+
+                <!-- Bande supérieure -->
+                <DockPanel LastChildFill="True" VerticalAlignment="Top" Height="60" Background="#101010">
+                    <TextBlock Text="CineStream"
+                       FontSize="26"
+                       FontWeight="Bold"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       Margin="20,0,0,0"/>
+                    <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                        <Button x:Name="BtnConnexion" Content="Se connecter" Margin="10,0" Padding="15,5"/>
+                        <Button x:Name="BtnInscription" Content="S’inscrire" Margin="10,0" Padding="15,5"/>
+                    </StackPanel>
+                </DockPanel>
+
+                <!-- Contenu principal centré -->
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock Text="Regardez. Explorez. Profitez."
+                       FontSize="28" FontWeight="Bold"
+                       Foreground="White"
+                       TextAlignment="Center" Margin="0,0,0,20"/>
+                    <Button x:Name="BtnCatalogue"
+                    Content="Accéder au catalogue"
+                    Width="250" Height="45"
+                    FontSize="16"
+                    Background="#E50914" Foreground="White"
+                    BorderBrush="Transparent"
+                    Cursor="Hand"/>
+                </StackPanel>
+            </Grid>
+        
+
+
+    
 </Window>

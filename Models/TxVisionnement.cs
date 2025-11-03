@@ -40,9 +40,9 @@ public class TxVisionnement : Transaction
 
             //  Récupérer les films où la personne a un crédit "Réalisateur"
             var filmsDuRealisateur = DataStore.Films
-                .Where(f => f.CréditsFilm != null &&
-                            f.CréditsFilm.Any(c =>
-                                c.Personne == personne &&
+                .Where(f => f.CréditFilm != null &&
+                            f.CréditFilm.Any(c =>
+                                c.Personne == Personne &&
                                 c.Rôle == TypeRôle.Réalisateur))
                 .ToList();
 

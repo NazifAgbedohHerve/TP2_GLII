@@ -1,11 +1,25 @@
 using System;
 
-public class AbonnementPlan {
-	private String numéro;
-	private String nom;
-	private String prixMensuel;
-	private String limiteAppareils;
+namespace TP2_GLII.Model
+{
+    public class AbonnementPlan
+    {
+        private string numéro;
+        private string nom;
+        private decimal prixMensuel;
+        private int limiteAppareils;
 
-	private TxAbonnement[] basé_sur;
+        private TxAbonnement[] basé_sur;
 
+        public string Numéro { get => numéro; set => numéro = value; }
+        public string Nom { get => nom; set => nom = value; }
+        public decimal PrixMensuel { get => prixMensuel; set => prixMensuel = value; }
+        public int LimiteAppareils { get => limiteAppareils; set => limiteAppareils = value; }
+        public TxAbonnement[] BaséSur { get => basé_sur; set => basé_sur = value; }
+
+        public override string ToString()
+        {
+            return $"{Nom} ({PrixMensuel:C}/mois, {LimiteAppareils} appareils)";
+        }
+    }
 }

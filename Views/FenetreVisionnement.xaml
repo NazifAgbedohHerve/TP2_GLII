@@ -5,8 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TP2_GLII.Views"
         mc:Ignorable="d"
-        Title="FenetreVisionnement" Height="450" Width="800">
-    <Grid>
-        
+        Title="Visionnement" Height="600" Width="900" WindowStartupLocation="CenterScreen" Background="Black">
+   
+
+        <Grid>
+            
+        <StackPanel>
+            <TextBlock x:Name="txtTitreFilm" FontSize="22" Foreground="White" FontWeight="Bold" Margin="0,0,0,20"/>
+            <MediaElement x:Name="videoPlayer" Height="220" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+                <Button x:Name="BtnVisionner" Content="Visionner" Width="120" Height="36" Margin="10"/>
+                <Button x:Name="BtnFermer" Content="Quitter" Width="120" Height="36" Margin="10"/>
+            </StackPanel>
+
+            <TextBlock x:Name="txtMessage" Foreground="LightGreen" FontWeight="Bold" TextAlignment="Center" Margin="0,10,0,0"/>
+        </StackPanel>
     </Grid>
+    
+
 </Window>

@@ -45,7 +45,7 @@ namespace TP2_GLII.Models
         Numéro = Guid.NewGuid().ToString();
         DateConnexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-        Console.WriteLine($"Session {Numéro} ouverte pour le membre {membre.nomUsager}.");
+        Console.WriteLine($"Session {Numéro} ouverte pour le membre {membre.NomUsager}.");
 
         // On ajoute le membre au DataStore (comme simulé dans ton projet)
         if (!DataStore.Membres.Contains(membre))

@@ -19,9 +19,60 @@ namespace TP2_GLII.Views
     /// </summary>
     public partial class FenetreHistoriqueVisionnements : Window
     {
-        public FenetreHistoriqueVisionnements()
+        private Membre membre;
+
+        public FenetreHistoriqueVisionnements(Membre membre)
         {
             InitializeComponent();
+            this.membre = membre;
+            ChargerHistorique();
+            BtnRetour.Click += (s, e) => { new FenetreCompte(membre).Show(); this.Close(); };
+            BtnDetails.Click += BtnDetails_Click;
+        }
+
+        private void ChargerHistorique()
+        {
+            lvHistorique.ItemsSource = null;
+
+            if (membre?.Possède?.Transactions == null)
+            {
+                lvHistorique.ItemsSource = new List<object>();
+                return;
+            }
+
+            var visionnements = membre.Possède.Transactions
+                .Where(t => t is TxVisionnement)
+                .Cast<TxVisionnement>()
+                .OrderByDescending(v => v.Date)
+                .Select(v => new {
+                    Date = v.Date.ToString("g"),
+                    Film = v.Film,
+                    ModeAccesString = v.ModeAccès == ModeAccès.Abonnement ? "Abonnement" : "À l'unité",
+                    PaiementMontant = v.Paiement != null ? v.Paiement.Montant.ToString("C") : (v.ModeAccès == ModeAccès.Abonnement ? "Inclus" : "—"),
+                    Tx = v
+                }).ToList();
+
+            lvHistorique.ItemsSource = visionnements;
+        }
+
+        private void BtnDetails_Click(object sender, RoutedEventArgs e)
+        {
+            var item = lvHistorique.SelectedItem;
+            if (item == null)
+            {
+                MessageBox.Show("Sélectionnez un visionnement pour voir les détails.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            // l'objet anonyme contient Tx = v
+            var txProp = item.GetType().GetProperty("Tx");
+            var tx = txProp?.GetValue(item) as TxVisionnement;
+            if (tx != null)
+            {
+                var fiche = new FenetreFicheFilm(tx.Film); // si l'on veux ouvrir la fiche film
+                fiche.Show();
+            }
         }
     }
 }
+

@@ -6,43 +6,34 @@
         xmlns:local="clr-namespace:TP2_GLII.Views"
         mc:Ignorable="d"
         Title="FenetreConnexion" Height="450" Width="800">
-    <Grid>
 
-                <!-- Image de fond floutée -->
-                <Image Source="pack://application:,,,/Images/background_login.jpg"
+    <Grid>
+            <Image Source="pack://application:,,,/Images/background_login.jpg"
                Stretch="Fill" Opacity="0.3"/>
 
-                <!-- Formulaire de connexion -->
-                <Border Background="#181818"
+            <Border Background="#181818"
                 CornerRadius="10"
                 Padding="40"
-                Width="350" Height="320"
+                Width="380"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Opacity="0.95">
-                    <StackPanel>
-                        <TextBlock Text="Connexion"
-                           FontSize="24"
+
+                <StackPanel>
+                    <TextBlock Text="Connexion"
+                           FontSize="26"
                            FontWeight="Bold"
                            Foreground="White"
-                           Margin="0,0,0,25"
-                           TextAlignment="Center"/>
+                           TextAlignment="Center"
+                           Margin="0,0,0,25"/>
 
-                        <TextBox x:Name="txtEmail"
-                         Height="35"
-                         Margin="0,0,0,10"
-                         Text="Adresse courriel"
-                         FontSize="14"
-                         Padding="10"/>
+                    <TextBlock Text="Nom d'usager" Foreground="LightGray"/>
+                    <TextBox x:Name="txtNomUsager" Height="35" Margin="0,0,0,15"/>
 
-                        <PasswordBox x:Name="txtPassword"
-                             Height="35"
-                             Margin="0,0,0,20"
-                             FontSize="14"
-                             Padding="10"/>
+                    <TextBlock Text="Mot de passe" Foreground="LightGray"/>
+                    <PasswordBox x:Name="txtMotDePasse" Height="35" Margin="0,0,0,25"/>
 
-                        <Button x:Name="BtnConnexion"
-                        Content="Se connecter"
+                    <Button x:Name="BtnConnexion" Content="Se connecter"
                         Background="#E50914"
                         Foreground="White"
                         BorderBrush="Transparent"
@@ -51,17 +42,26 @@
                         Cursor="Hand"
                         Margin="0,0,0,10"/>
 
-                        <Button x:Name="BtnRetour"
-                        Content="Retour"
+                    <Button x:Name="BtnRetour" Content="Retour"
                         Background="Transparent"
                         Foreground="White"
                         BorderBrush="Gray"
-                        Height="35"
+                        Height="35" Cursor="Hand"/>
+
+                    <TextBlock Text="Pas encore membre ?"
+                           Foreground="LightGray"
+                           Margin="0,20,0,5"
+                           TextAlignment="Center"/>
+                    <Button x:Name="BtnInscription"
+                        Content="Créer un compte"
+                        Background="Transparent"
+                        Foreground="#E50914"
+                        BorderBrush="Transparent"
+                        FontWeight="Bold"
                         Cursor="Hand"/>
-                    </StackPanel>
-                </Border>
-         
+                </StackPanel>
+            </Border>
+        </Grid>
+    
 
-
-    </Grid>
 </Window>
