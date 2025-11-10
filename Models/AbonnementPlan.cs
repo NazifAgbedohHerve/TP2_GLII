@@ -17,6 +17,13 @@ namespace TP2_GLII.Model
         public int LimiteAppareils { get => limiteAppareils; set => limiteAppareils = value; }
         public TxAbonnement[] BaséSur { get => basé_sur; set => basé_sur = value; }
 
+        public AbonnementPlan(string numero, string nom, decimal prix)
+        {
+            Numéro = numero;
+            Nom = nom;
+            PrixMensuel = prix;
+        }
+
         public override string ToString()
         {
             return $"{Nom} ({PrixMensuel:C}/mois, {LimiteAppareils} appareils)";

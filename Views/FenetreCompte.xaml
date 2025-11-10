@@ -16,38 +16,72 @@ Background="Black">
 
         <!-- Titre -->
         <TextBlock Text="Mon compte" FontSize="28" FontWeight="Bold" 
-                   Foreground="White" HorizontalAlignment="Left"/>
+               Foreground="White" HorizontalAlignment="Left"/>
 
         <!-- Contenu principal -->
         <StackPanel Grid.Row="1" Margin="0,20,0,0" Orientation="Vertical" VerticalAlignment="Top">
+
+            <!-- Infos du membre -->
             <TextBlock x:Name="txtNomMembre" FontSize="20" Foreground="White" Margin="0,0,0,10"/>
             <TextBlock x:Name="txtCourriel" Foreground="LightGray" Margin="0,0,0,5"/>
             <TextBlock x:Name="txtSolde" FontSize="16" Foreground="LightGray" Margin="0,10,0,20"/>
 
+            <!-- Boutons Compte -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,0,0,30">
                 <Button x:Name="BtnApprovisionner" Content="Approvisionner"
-                        Background="#E50914" Foreground="White" Width="150" Margin="0,0,15,0"/>
+                    Background="#E50914" Foreground="White" Width="150" Margin="0,0,15,0"/>
                 <Button x:Name="BtnRembourser" Content="Demander remboursement"
-                        Background="Transparent" BorderBrush="Gray" Foreground="White" Width="200"/>
+                    Background="Transparent" BorderBrush="Gray" Foreground="White" Width="200"/>
             </StackPanel>
 
             <Separator Margin="0,10,0,10"/>
 
+            <!-- Section Abonnement -->
             <TextBlock Text="Abonnement actuel :" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,10"/>
             <TextBlock x:Name="txtAbonnement" Foreground="LightGray" FontSize="16" Margin="0,5,0,20"/>
 
-            <StackPanel Orientation="Horizontal">
-                <Button x:Name="BtnSuspendre" Content="Suspendre l’abonnement"
-                        Background="#E50914" Foreground="White" Width="220" Margin="0,0,15,0"/>
-                <Button x:Name="BtnHistorique" Content="Voir mes visionnements"
-                        Background="Transparent" BorderBrush="Gray" Foreground="White" Width="220"/>
+            <TextBlock Text="Abonnement"
+                   Foreground="White"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   Margin="0,15,0,5"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="BtnSAbonner"
+                    Content="S’abonner (Basic)"
+                    Width="160" Height="36"
+                    Margin="6"
+                    Background="#2196F3"
+                    Foreground="White"/>
+
+                <Button x:Name="BtnReactiver"
+                    Content="Réactiver"
+                    Width="120" Height="36"
+                    Margin="6"
+                    Background="#4CAF50"
+                    Foreground="White"/>
+
+                <Button x:Name="BtnSuspendre"
+                    Content="Suspendre"
+                    Width="120" Height="36"
+                    Margin="6"
+                    Background="#E53935"
+                    Foreground="White"/>
             </StackPanel>
+
+            <!-- Historique -->
+            <StackPanel Orientation="Horizontal" Margin="0,30,0,0">
+                <Button x:Name="BtnHistorique" Content="Voir mes visionnements"
+                    Background="Transparent" BorderBrush="Gray" Foreground="White" Width="220"/>
+            </StackPanel>
+
         </StackPanel>
 
         <!-- Bouton retour -->
         <Button x:Name="BtnRetour" Content="Retour au catalogue"
-                HorizontalAlignment="Right" VerticalAlignment="Top"
-                Width="180" Height="35"
-                Background="Transparent" BorderBrush="Gray" Foreground="White"/>
+            HorizontalAlignment="Right" VerticalAlignment="Top"
+            Width="180" Height="35"
+            Background="Transparent" BorderBrush="Gray" Foreground="White"/>
     </Grid>
+
 </Window>

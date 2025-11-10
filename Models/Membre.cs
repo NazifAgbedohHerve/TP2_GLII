@@ -1,5 +1,6 @@
 using System;
 using TP2_GLII.Model;
+using TP2_GLII.Models;
 
 public class Membre : Utilisateur
 {
@@ -41,5 +42,29 @@ public class Membre : Utilisateur
 
         return null;
     }
+
+    // Abonnement
+    public TxAbonnement SAbonner(AbonnementPlan plan, bool renouvellementAuto = true)
+    {
+        if (AbonnementActuel != null && AbonnementActuel.Statut == "Actif")
+            throw new InvalidOperationException("Vous avez déjà un abonnement actif.");
+
+        var tx = new TxAbonnement
+        {
+            Numéro = Guid.NewGuid().ToString(),
+            Date = DateTime.Now,
+            AbonnementPlan = plan,
+            ValideDepuis = DateTime.Now,
+            ValideJusqua = DateTime.Now.AddMonths(1),
+            RenouvellementAuto = renouvellementAuto,
+            Statut = "Actif"
+        };
+
+        AbonnementActuel = tx;
+        DataStore.Transactions.Add(tx);
+
+        return tx;
+    }
+
 }
 

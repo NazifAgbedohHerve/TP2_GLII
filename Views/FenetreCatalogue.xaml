@@ -7,59 +7,88 @@
         mc:Ignorable="d"
         Title="FenetreCatalogue" Height="600" Width="1000" Background="Black" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-            
-            <DockPanel Margin="10">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock x:Name="txtGreeting" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                    <Button x:Name="BtnConnexion" Content="Se connecter" Margin="5" Padding="10,4"/>
-                    <Button x:Name="BtnInscription" Content="S'inscrire" Margin="5" Padding="10,4"/>
-                <Button Content="Mon compte"
-        Width="130"
-        Height="36"
-        Click="BtnCompte_Click"/>
 
+        <DockPanel Margin="10">
+
+            <!-- Bande du haut (connexion / compte / etc.) -->
+            <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock x:Name="txtGreeting" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <Button x:Name="BtnConnexion" Content="Se connecter" Margin="5" Padding="10,4"/>
+                <Button x:Name="BtnInscription" Content="S'inscrire" Margin="5" Padding="10,4"/>
+                <Button Content="Mon compte"
+                    Width="130"
+                    Height="36"
+                    Click="BtnCompte_Click"/>
             </StackPanel>
 
+
+            <!-- Zone principale -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="20">
+
                     <TextBox x:Name="txtRecherche" Width="350" Height="30" Margin="0,0,0,10"/>
                     <Button x:Name="BtnRechercher" Content="Rechercher" Width="120" Height="30" Margin="0,0,0,10"/>
-                    <ListView x:Name="lvFilms" Height="380">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="Gray" BorderThickness="0,0,0,1" Padding="8">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="120"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="180"/>
-                                    </Grid.ColumnDefinitions>
 
-                                    <!-- Pas d'affiche → on met un rectangle -->
-                                    <Rectangle Grid.Column="0" Width="110" Height="60" Fill="DarkGray" RadiusX="6" RadiusY="6"/>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="lvFilms">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel Orientation="Horizontal" Margin="10"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
 
-                                    <StackPanel Grid.Column="1" Margin="10,0">
-                                        <TextBlock Text="{Binding Titre}" FontWeight="Bold" Foreground="White"/>
-                                        <TextBlock Text="{Binding Appartient[0].NomCategorie}" Foreground="LightGray"/>
-                                    </StackPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#1A1A1A" CornerRadius="8" Margin="10" Width="180" Cursor="Hand">
+                                        <StackPanel>
+                                            <Image Source="{Binding Affiche}" Height="250" Stretch="Fill" />
+                                            <TextBlock Text="{Binding Titre}" FontWeight="Bold" 
+                                   Foreground="White" Margin="6,8,6,0" TextAlignment="Center"/>
 
-                                    <StackPanel Grid.Column="2" HorizontalAlignment="Right">
-                                        <TextBlock Text="{Binding Prix, StringFormat={}{0:C}}" Foreground="White" HorizontalAlignment="Right"/>
-                                        <WrapPanel HorizontalAlignment="Right" Margin="0,6,0,0">
-                                            <Button Content="Détails" Width="80" Margin="4" Click="BtnDetails_Click"/>
-                                            <Button Content="Visionner" Width="80" Margin="4" Click="BtnVisionner_Click"/>
-                                        </WrapPanel>
-                                    </StackPanel>
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,10">
+                                                <Button Content="Détails" Width="70" Margin="4" Click="BtnDetails_Click"/>
+                                                <Button Content="▶" Width="40" Click="BtnVisionner_Click"/>
+                                            </StackPanel>
+                                        </StackPanel>
 
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Effect">
+                                                    <Setter.Value>
+                                                        <DropShadowEffect Color="Black" BlurRadius="5"/>
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect Color="White" BlurRadius="15"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="RenderTransform">
+                                                            <Setter.Value>
+                                                                <ScaleTransform ScaleX="1.05" ScaleY="1.05"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
 
-                </ListView>
                 </StackPanel>
-            </DockPanel>
-        </Grid>
-    
-   
+            </ScrollViewer>
+
+        </DockPanel>
+
+    </Grid>
+
+
+
 
 </Window>

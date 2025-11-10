@@ -47,23 +47,23 @@ namespace TP2_GLII.Views
                 return;
             }
 
-            // Vérifier si le membre a un abonnement actif
+            // Vérifier abonnement actif
             bool abonnementActif = membre.AbonnementActuel != null
-                                   && membre.AbonnementActuel.ValideJusqua > DateTime.Now;
+                               && membre.AbonnementActuel.Statut == "Actif"
+                               && membre.AbonnementActuel.ValideJusqua > DateTime.Now;
 
             ModeAccès modeAcces;
             Paiement paiement = null;
 
             if (abonnementActif)
             {
-                //  Visionnement inclus dans l’abonnement
+                // Visionnement inclus
                 modeAcces = ModeAccès.Abonnement;
             }
             else
             {
-                //  Visionnement à l’unité → paiement requis
+                // Visionnement à l’unité
                 modeAcces = ModeAccès.A_L_Unité;
-
                 decimal prix = film.Prix;
 
                 if (membre.Compte.Solde < prix)
@@ -77,42 +77,36 @@ namespace TP2_GLII.Views
 
                 paiement = new Paiement
                 {
+                    Numéro = Guid.NewGuid().ToString(),
                     Date = DateTime.Now,
-                    Montant = prix,
-                    Sur = membre.Compte?.ParDéfaut, // si besoin
+                    Montant = prix
                 };
 
                 DataStore.Paiements.Add(paiement);
             }
 
-            //  Création du TxVisionnement
+            // Enregistrer la transaction
             var tx = new TxVisionnement
             {
+                Numéro = Guid.NewGuid().ToString(),
+                Date = DateTime.Now,
                 Film = film,
                 Membre = membre,
                 ModeAccès = modeAcces,
-                Date = DateTime.Now,
                 Paiement = paiement
             };
 
-            // Ajout dans l’historique
             membre.Compte.AjouterTransaction(tx);
             DataStore.Transactions.Add(tx);
 
-            MessageBox.Show($"Visionnement de \"{film.Titre}\" lancé.",
-                            "Visionnement", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            //  Lancement de la vidéo
+            //  Lecture vidéo
             if (!string.IsNullOrEmpty(film.CheminFichier))
             {
                 videoPlayer.Source = new Uri(film.CheminFichier, UriKind.RelativeOrAbsolute);
                 videoPlayer.Play();
             }
-            else
-            {
-                MessageBox.Show("Aucune source vidéo disponible.");
-            }
         }
+
         private void BtnFermer_Click(object sender, RoutedEventArgs e)
         {
             videoPlayer.Stop();

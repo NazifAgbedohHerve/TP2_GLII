@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TP2_GLII.Models;
 
 namespace TP2_GLII.Views
 {
@@ -33,6 +34,10 @@ namespace TP2_GLII.Views
             BtnRembourser.Click += BtnRembourser_Click;
             BtnSuspendre.Click += BtnSuspendre_Click;
             BtnHistorique.Click += BtnHistorique_Click;
+            BtnSAbonner.Click += BtnSAbonner_Click;
+            BtnReactiver.Click += BtnReactiver_Click;
+            BtnSuspendre.Click += BtnSuspendre_Click;
+
         }
 
         private void ChargerInfosMembre()
@@ -54,6 +59,35 @@ namespace TP2_GLII.Views
             ChargerInfosMembre();
         }
 
+        private void BtnSAbonner_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Vérifier s'il existe déjà un abonnement actif
+                if (membre.AbonnementActuel != null &&
+                    membre.AbonnementActuel.Statut == "Actif" &&
+                    membre.AbonnementActuel.ValideJusqua > DateTime.Now)
+                {
+                    MessageBox.Show("Vous avez déjà un abonnement actif.", "Information");
+                    return;
+                }
+
+                // Créer l’abonnement
+                var tx = membre.SAbonner(DataStore.PlansAbonnement[0]);
+
+                MessageBox.Show(
+                    $"Abonnement « {tx.TypeAbonnement} » activé jusqu’au {tx.ValideJusqua:dd MMM yyyy}.",
+                    "Abonnement confirmé", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                ChargerInfosMembre();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
         private void BtnRembourser_Click(object sender, RoutedEventArgs e)
         {
             if (membre.Compte.Solde > 0)
@@ -70,22 +104,28 @@ namespace TP2_GLII.Views
 
         private void BtnSuspendre_Click(object sender, RoutedEventArgs e)
         {
-            if (membre.AbonnementActuel != null)
+            if (membre.AbonnementActuel == null)
             {
-                var confirm = MessageBox.Show("Voulez-vous suspendre votre abonnement ?", "Confirmation",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question);
+                MessageBox.Show("Vous n'avez aucun abonnement actif.");
+                return;
+            }
 
-                if (confirm == MessageBoxResult.Yes)
-                {
-                    membre.AbonnementActuel.Statut = "Suspendu";
-                    MessageBox.Show("Abonnement suspendu.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    ChargerInfosMembre();
-                }
-            }
-            else
+            membre.AbonnementActuel.Statut = "Suspendu";
+            MessageBox.Show("Abonnement suspendu.");
+            ChargerInfosMembre();
+        }
+
+        private void BtnReactiver_Click(object sender, RoutedEventArgs e)
+        {
+            if (membre.AbonnementActuel == null)
             {
-                MessageBox.Show("Vous n’avez aucun abonnement actif.", "Information");
+                MessageBox.Show("Aucun abonnement à réactiver.");
+                return;
             }
+
+            membre.AbonnementActuel.Statut = "Actif";
+            MessageBox.Show("Abonnement réactivé.");
+            ChargerInfosMembre();
         }
 
         private void BtnHistorique_Click(object sender, RoutedEventArgs e)

@@ -13,6 +13,8 @@ public class Film
     private string synopsis;
     private StatutDisponible statut;
     private string motsClés;
+    public string Affiche { get; set; }
+
 
     private BandeAnnonce[] bande_Annonces;
     private Catégorie[] appartient;
