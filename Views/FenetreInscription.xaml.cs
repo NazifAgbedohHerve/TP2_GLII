@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TP2_GLII.Model;
 using TP2_GLII.Models;
 
 namespace TP2_GLII.Views
@@ -27,10 +28,12 @@ namespace TP2_GLII.Views
         {
             InitializeComponent();
 
-            // Le visiteur actuel ouvre une session
-            _visiteur = new Visiteur();
-            _visiteur.SAuthentifier("", ""); // Création symbolique d'une session
-            _session = _visiteur.SessionCourante;
+            // Une nouvelle session démarre pour l'inscription
+            _session = new Session
+            {
+                Numéro = Guid.NewGuid().ToString(),
+                DateConnexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+            };
 
             BtnCreer.Click += BtnCreer_Click;
             BtnRetour.Click += (s, e) =>
@@ -44,10 +47,8 @@ namespace TP2_GLII.Views
         {
             try
             {
-                // Création d'un objet Membre basé sur les champs du formulaire
                 Membre nouveauMembre = new Membre
                 {
-                    
                     Nom = txtNom.Text.Trim(),
                     Prénom = txtPrenom.Text.Trim(),
                     Adresse = txtAdresse.Text.Trim(),
@@ -55,33 +56,29 @@ namespace TP2_GLII.Views
                     AdresseCourriel = txtCourriel.Text.Trim(),
                     NomUsager = txtNomUsager.Text.Trim(),
                     MotDePasse = txtMotDePasse.Password.Trim(),
-                    LanguePreferee = ((cbLangue.SelectedItem as ComboBoxItem)?.Content ?? "Français").ToString(),
-                    AAccepteRecevoirNotifications = chkNotif.IsChecked == true
+                    LanguePreferee = (cbLangue.SelectedItem as ComboBoxItem)?.Content.ToString(),
+                    AAccepteRecevoirNotifications = chkNotif.IsChecked ?? false
                 };
 
-                // Simulation d’un numéro unique
                 nouveauMembre.Numero = Guid.NewGuid().ToString();
+                nouveauMembre.Compte = new Compte(); // ✅ on crée le compte
 
-                // Confirmation de l’inscription via la Session
                 _session.ConfirmerInscriptionMembre(ref nouveauMembre);
 
-                // Ajout à la base simulée
-                DataStore.Membres.Add(nouveauMembre);
-                DataStore.MembreConnecte = nouveauMembre;
-
-                MessageBox.Show($"Bienvenue {nouveauMembre.Prénom} ! Votre compte a été créé avec succès.",
+                MessageBox.Show($"Bienvenue {nouveauMembre.Prénom} !",
                                 "Inscription réussie",
                                 MessageBoxButton.OK,
                                 MessageBoxImage.Information);
 
-                // Redirection vers le catalogue
                 new FenetreCatalogue().Show();
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Erreur lors de l’inscription : {ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Erreur : {ex.Message}");
             }
         }
+
+
     }
 }

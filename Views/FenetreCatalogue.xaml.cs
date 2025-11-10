@@ -37,13 +37,27 @@ namespace TP2_GLII.Views
 
         private void BtnRechercher_Click(object sender, RoutedEventArgs e)
         {
-            string critere = txtRecherche.Text?.Trim() ?? "";
-            var résultats = new List<Film>();
-            foreach (Film f in DataStore.Films)
-                if (f.Titre != null && f.Titre.ToLower().Contains(critere.ToLower()))
-                    résultats.Add(f);
+            string critere = txtRecherche.Text?.Trim().ToLower() ?? "";
+
+            if (string.IsNullOrEmpty(critere))
+            {
+                lvFilms.ItemsSource = DataStore.Films;
+                return;
+            }
+
+            var résultats = DataStore.Films.Where(f =>
+                (f.Titre?.ToLower().Contains(critere) ?? false) ||
+                (f.Appartient != null && f.Appartient.Any(cat =>
+                    cat.NomCategorie.ToLower().Contains(critere)))
+            ).ToList();
+
             lvFilms.ItemsSource = résultats;
+            if (!résultats.Any())
+                MessageBox.Show("Aucun film correspond à votre recherche.");
+
         }
+
+
 
         private void BtnDetails_Click(object sender, RoutedEventArgs e)
         {
@@ -54,6 +68,18 @@ namespace TP2_GLII.Views
             fiche.Show();
             this.Close();
         }
+
+        private void BtnCompte_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataStore.MembreConnecte == null)
+            {
+                MessageBox.Show("Vous devez être connecté.");
+                return;
+            }
+
+            new FenetreCompte(DataStore.MembreConnecte).Show();
+        }
+
 
         private void BtnVisionner_Click(object sender, RoutedEventArgs e)
         {

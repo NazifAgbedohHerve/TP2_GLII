@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TP2_GLII.Model;
 using TP2_GLII.Models;
 
 public class Film
@@ -8,7 +9,7 @@ public class Film
     private string titre;
     private string annéeSortie;
     private string durée;
-    private string prix;
+    private decimal prix;
     private string synopsis;
     private StatutDisponible statut;
     private string motsClés;
@@ -21,17 +22,21 @@ public class Film
 
     private List<CréditFilm> créditFilm = new List<CréditFilm>();
 
-    public List<CréditFilm> CréditFilm { get => créditFilm; set => créditFilm = value; }
+    public List<CréditFilm> CréditFilm { get; set; } = new List<CréditFilm>();
+
 
     // Accesseurs publics (pour liaison WPF et logique)
     public string Numéro { get => numéro; set => numéro = value; }
     public string Titre { get => titre; set => titre = value; }
     public string AnnéeSortie { get => annéeSortie; set => annéeSortie = value; }
     public string Durée { get => durée; set => durée = value; }
-    public string Prix { get => prix; set => prix = value; }
+    public decimal Prix { get => prix; set => prix = value; }
     public string Synopsis { get => synopsis; set => synopsis = value; }
     public StatutDisponible Statut { get => statut; set => statut = value; }
     public string MotsClés { get => motsClés; set => motsClés = value; }
+
+    public string CheminFichier { get; set; } // exemple : "Videos/Inception.mp4"
+
 
     public BandeAnnonce[] Bande_Annonces { get => bande_Annonces; set => bande_Annonces = value; }
     public Catégorie[] Appartient { get => appartient; set => appartient = value; }
@@ -46,21 +51,23 @@ public class Film
         throw new NotImplementedException("Recherche de film non implémentée ici.");
     }
 
-    public DataStream Visionner()
+    public void Visionner(Membre membre)
     {
-        // Simulation : créer un DataStream et enregistrer un txVisionnement si besoin
-        var ds = new DataStream();
-        System.Diagnostics.Debug.WriteLine($"Lecture simulée du film : {Titre} (stream {ds.StreamId})");
+        if (membre == null)
+            return;
 
-        // Optionnel : enregistrer le visionnement dans l'historique
-        if (DataStore.MembreConnecte != null)
+        // Enregistrer le visionnement comme transaction
+        var tx = new TxVisionnement
         {
-            // créer et ajouter une transaction/txVisionnement si tu as la classe TxVisionnement
-            // ex: DataStore.MembreConnecte.AjouterVisionnement(new TxVisionnement(...));
-        }
+            Film = this,
+            Date = DateTime.Now,
+            Membre = membre,
+            ModeAccès = membre.AbonnementActuel != null ? ModeAccès.Abonnement : ModeAccès.A_L_Unité
+        };
 
-        return ds;
+        DataStore.Transactions.Add(tx);
     }
+
 
     public void AjouterCrédit(Personne personne, TypeRôle rôle)
     {

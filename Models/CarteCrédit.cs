@@ -1,4 +1,5 @@
 using System;
+using TP2_GLII.Model;
 
 public class CarteCrédit {
 	private String numéroCarteCrédit;

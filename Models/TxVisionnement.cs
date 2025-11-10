@@ -7,13 +7,16 @@ public class TxVisionnement : Transaction
         private ModeAccès modeAccès;
         private Paiement paiement;
         private Compte compte;
+        private Membre membre;
 
-        public Film Film { get => film; set => film = value; }
+
+    public Film Film { get => film; set => film = value; }
         public ModeAccès ModeAccès { get => modeAccès; set => modeAccès = value; }
         public Paiement Paiement { get => paiement; set => paiement = value; }
         public Compte Compte { get => compte; set => compte = value; }
+    public Membre Membre { get => membre; set => membre = value; }
 
-        public TxVisionnement() { }
+    public TxVisionnement() { }
 
         public TxVisionnement(Film film, ModeAccès modeAccès, Paiement paiement, Compte compte)
         {
@@ -29,36 +32,37 @@ public class TxVisionnement : Transaction
                 throw new InvalidOperationException("Visionnement par abonnement : aucun paiement ne doit être lié.");
         }
 
-        /// <summary>
-        /// Retourne les visionnements des films réalisés par une personne donnée
-        /// (celle-ci doit être créditée comme Réalisateur dans les films).
-        /// </summary>
-        public TxVisionnement[] ConsulterHistoriquePourUnRéalisateur(ref Personne personne)
-        {
-            if (personne == null)
-                return Array.Empty<TxVisionnement>();
+    /// <summary>
+    /// Retourne les visionnements des films réalisés par une personne donnée
+    /// (celle-ci doit être créditée comme Réalisateur dans les films).
+    /// </summary>
+    public TxVisionnement[] ConsulterHistoriquePourUnRéalisateur( Personne personne)
+    {
+        if (personne == null)
+            return Array.Empty<TxVisionnement>();
 
-            //  Récupérer les films où la personne a un crédit "Réalisateur"
-            var filmsDuRealisateur = DataStore.Films
-                .Where(f => f.CréditFilm != null &&
-                            f.CréditFilm.Any(c =>
-                                c.Personne == Personne &&
-                                c.Rôle == TypeRôle.Réalisateur))
-                .ToList();
+        // Récupérer les films où la personne a un crédit de type Réalisateur
+        var filmsDuRealisateur = DataStore.Films
+            .Where(f => f.CréditFilm != null &&
+                        f.CréditFilm.Any(c =>
+                            c.Personne == personne &&               
+                            c.Rôle == TypeRôle.Réalisateur))
+            .ToList();
 
-            //  Sélectionner les visionnements liés à ces films
-            var visionnements = DataStore.Transactions
-                .OfType<TxVisionnement>()
-                .Where(tx => filmsDuRealisateur.Contains(tx.Film))
-                .ToArray();
+        // Sélectionner les visionnements liés à ces films
+        var visionnements = DataStore.Transactions
+            .OfType<TxVisionnement>()
+            .Where(tx => filmsDuRealisateur.Contains(tx.Film))
+            .ToArray();
 
-            return visionnements;
-        }
+        return visionnements;
+    }
 
-        /// <summary>
-        /// Retourne une représentation lisible du visionnement.
-        /// </summary>
-        public override string ToString()
+
+    /// <summary>
+    /// Retourne une représentation lisible du visionnement.
+    /// </summary>
+    public override string ToString()
         {
             string mode = ModeAccès == ModeAccès.Abonnement ? "Abonnement" : "À l’unité";
             string prix = Paiement != null ? $"{Paiement.Montant:C}" : "Inclus";

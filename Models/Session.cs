@@ -1,32 +1,33 @@
-using System;
+Ôªøusing System;
+using System.Windows;
 using TP2_GLII.Model;
 using TP2_GLII.Models;
 
 namespace TP2_GLII.Models
 {
     public class Session {
-	private String numÈro;
+	private String num√©ro;
 	private String dateConnexion;
-	private String dateDÈconnexion;
+	private String dateD√©connexion;
 
     // Relation UML : une session peut faire des transactions, des cotes, etc.
     private List<Transaction> fait = new List<Transaction>();
     private List<Cote> cote = new List<Cote>();
 
-    // Association avec un visiteur (optionnelle, peut Ítre null)
+    // Association avec un visiteur (optionnelle, peut √™tre null)
     private Visiteur s_authentifie;
 
     //  Accesseurs publics 
-    public string NumÈro { get => numÈro; set => numÈro = value; }
+    public string Num√©ro { get => num√©ro; set => num√©ro = value; }
     public string DateConnexion { get => dateConnexion; set => dateConnexion = value; }
-    public string DateDÈconnexion { get => dateDÈconnexion; set => dateDÈconnexion = value; }
+    public string DateD√©connexion { get => dateD√©connexion; set => dateD√©connexion = value; }
     public Visiteur SAUTHENTIFIE { get => s_authentifie; set => s_authentifie = value; }
 
 
     public void FermerSession()
     {
-        DateDÈconnexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        Console.WriteLine($"Session {NumÈro} fermÈe ‡ {DateDÈconnexion}.");
+        DateD√©connexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+        Console.WriteLine($"Session {Num√©ro} ferm√©e √† {DateD√©connexion}.");
     }
 
     public void DemanderFormInscriptionMembre()
@@ -36,66 +37,68 @@ namespace TP2_GLII.Models
 
     public void AfficherFormInscriptionMembre()
     {
-        Console.WriteLine("Affiche la fenÍtre d'inscription membre.");
+        Console.WriteLine("Affiche la fen√™tre d'inscription membre.");
     }
 
     public void ConfirmerInscriptionMembre(ref Membre membre)
     {
-        // Attribution díun identifiant unique ‡ la session
-        NumÈro = Guid.NewGuid().ToString();
+        // Attribution d‚Äôun identifiant unique √† la session
+        Num√©ro = Guid.NewGuid().ToString();
         DateConnexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
-        Console.WriteLine($"Session {NumÈro} ouverte pour le membre {membre.NomUsager}.");
+        Console.WriteLine($"Session {Num√©ro} ouverte pour le membre {membre.NomUsager}.");
 
-        // On ajoute le membre au DataStore (comme simulÈ dans ton projet)
+        // On ajoute le membre au DataStore (comme simul√© dans ton projet)
         if (!DataStore.Membres.Contains(membre))
         {
             DataStore.Membres.Add(membre);
             DataStore.MembreConnecte = membre;
         }
 
-        // Relation : cette session appartient ‡ un visiteur qui síest authentifiÈ
+        // Relation : cette session appartient √† un visiteur qui s‚Äôest authentifi√©
         if (s_authentifie == null)
             s_authentifie = new Visiteur();
 
         // Optionnel : afficher confirmation
-        AfficherMessageConnexionRÈussie();
+        AfficherMessageConnexionR√©ussie();
     }
 
-    public void AfficherMessageConnexionRÈussie()
+    public void AfficherMessageConnexionR√©ussie()
     {
-        Console.WriteLine("Connexion rÈussie !");
+        Console.WriteLine("Connexion r√©ussie !");
     }
 
-    public void AfficherMessage…checConnexion()
+    public void AfficherMessage√âchecConnexion()
     {
-        Console.WriteLine("…chec de la connexion.");
+        Console.WriteLine("√âchec de la connexion.");
     }
 
-    public Membre ValiderInfoConnexion(string identifiant, string motDePasse)
-    {
-        // Recherche d'un membre existant
-        Membre membre = DataStore.Membres.FirstOrDefault(m =>
-            m.NomUsager.Equals(identifiant, StringComparison.OrdinalIgnoreCase)
-            && m.MotDePasse == motDePasse);
-
-        if (membre != null)
+        public Membre ValiderInfoConnexion(string identifiant, string motDePasse)
         {
-            NumÈro = Guid.NewGuid().ToString();
-            DateConnexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            DataStore.MembreConnecte = membre;
-            AfficherMessageConnexionRÈussie();
-            return membre;
-        }
-        else
-        {
-            AfficherMessage…checConnexion();
+            // Recherche d'un membre existant
+            Membre membre = DataStore.Membres.FirstOrDefault(m =>
+                m.NomUsager.Equals(identifiant, StringComparison.OrdinalIgnoreCase)
+                && m.MotDePasse == motDePasse);
+
+            if (membre != null)
+            {
+                // Cr√©er une session logique
+                Num√©ro = Guid.NewGuid().ToString();
+                DateConnexion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                DataStore.MembreConnecte = membre;
+
+                Console.WriteLine($"Connexion r√©ussie de {membre.NomUsager}, session {Num√©ro}");
+
+                return membre;
+            }
+
+            Console.WriteLine("√âchec de connexion.");
             return null;
         }
-    }
-	
-	
-	public void DemanderFormInscriptionAdmin() {
+
+
+        public void DemanderFormInscriptionAdmin() {
 		throw new System.NotImplementedException("Not implemented");
 	}
 	public void AfficherFormInscriptionAdmin() {
@@ -113,48 +116,104 @@ namespace TP2_GLII.Models
 	public void ValiderInfoConnexion(ref string identifiant, ref string motDePasse) {
 		throw new System.NotImplementedException("Not implemented");
 	}
-	
-	public void DemanderFormulaireRechercheFilms() {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	
-	public void AfficherFormulaireRechercheFilms() {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void RechercherFilms(ref string critËres) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void AfficherFilms(ref Film[] films) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public Film SÈlectionnerFilm() {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void AfficherDescriptionFilm(ref Film film) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void VisionnerFilm(ref Film film) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void VisualiserDataStreaming(ref DataStream dataStream) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void ConsulterHistoriqueTransactions(ref Client client) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void AfficherTransactions(ref Transaction transactions) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void ConsulterHistoriqueVisonnements(ref RÈalisateur rÈalisateur) {
-		throw new System.NotImplementedException("Not implemented");
-	}
-	public void AfficherVisionnements(ref TxVisionnement[] visionnements) {
-		throw new System.NotImplementedException("Not implemented");
-	}
 
+        //    Recherche et catalogue
+        public void DemanderFormulaireRechercheFilms()
+        {
+            Console.WriteLine("Affichage du formulaire de recherche de films (FenetreCatalogue).");
+        }
 
-	
+        public Film[] RechercherFilms(string critere)
+        {
+            var resultats = DataStore.Films
+                .Where(f =>
+                    (!string.IsNullOrEmpty(f.Titre) && f.Titre.Contains(critere, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(f.MotsCl√©s) && f.MotsCl√©s.Contains(critere, StringComparison.OrdinalIgnoreCase)))
+                .ToArray();
 
-}
+            Console.WriteLine($"{resultats.Length} film(s) trouv√©(s) pour '{critere}'.");
+            return resultats;
+        }
+
+        public void AfficherFilms(Film[] films)
+        {
+            foreach (var f in films)
+                Console.WriteLine($"- {f.Titre} ({f.Ann√©eSortie})");
+        }
+
+        public Film S√©lectionnerFilm(Film film)
+        {
+            Console.WriteLine($"Film s√©lectionn√© : {film.Titre}");
+            return film;
+        }
+
+        public void AfficherDescriptionFilm(ref Film film)
+        {
+            Console.WriteLine($"D√©tails du film : {film.Titre}\nSynopsis : {film.Synopsis}");
+        }
+
+        //    Visionnement
+
+        public void VisionnerFilm(Film film, ModeAcc√®s mode)
+        {
+            if (film == null || DataStore.MembreConnecte == null)
+            {
+                MessageBox.Show("Veuillez vous connecter pour visionner un film.");
+                return;
+            }
+
+            var membre = DataStore.MembreConnecte;
+            var compte = membre.Compte;
+
+            // üîπ Cr√©e une nouvelle transaction
+            var tx = new TxVisionnement
+            {
+                Film = film,
+                Compte = compte,
+                Membre = membre,
+                ModeAcc√®s = mode,
+                Num√©ro = Guid.NewGuid().ToString(),
+                Date = DateTime.Now,
+                Prix = film.Prix
+            };
+
+            DataStore.Transactions.Add(tx);
+
+            Console.WriteLine($" {membre.NomUsager} visionne {film.Titre} ({mode})");
+        }
+
+        //  Historique Transactions
+
+        public void ConsulterHistoriqueTransactions( Membre membre)
+        {
+            var transactions = DataStore.Transactions
+                .Where(t => (t as TxVisionnement)?.Membre == membre)
+                .ToArray();
+
+            Console.WriteLine($"Historique pour {membre.NomUsager} : {transactions.Length} transaction(s)");
+            AfficherTransactions(ref transactions);
+        }
+
+        public void AfficherTransactions(ref Transaction[] transactions)
+        {
+            foreach (var tx in transactions)
+                Console.WriteLine(tx.ResumeTransaction());
+        }
+        // Historique Visionnements
+        
+        public void ConsulterHistoriqueVisionnements(ref Personne realisateur)
+        {
+            var tx = new TxVisionnement();
+            var visionnements = tx.ConsulterHistoriquePourUnR√©alisateur(realisateur);
+            AfficherVisionnements(ref visionnements);
+        }
+
+        public void AfficherVisionnements(ref TxVisionnement[] visionnements)
+        {
+            foreach (var v in visionnements)
+                Console.WriteLine($"- {v.Film.Titre} visionn√© par {v.Membre.NomUsager}");
+        }
+
+    }
 }
 

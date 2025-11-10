@@ -35,73 +35,91 @@ namespace TP2_GLII.Views
         // Bouton "Visionner"
         private void BtnVisionner_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (film == null || membre == null)
             {
-                if (film == null || membre == null)
+                MessageBox.Show("Aucun film ou membre sélectionné.");
+                return;
+            }
+
+            if (membre.Compte == null)
+            {
+                MessageBox.Show("Ce membre n'a pas de compte associé.");
+                return;
+            }
+
+            // Vérifier si le membre a un abonnement actif
+            bool abonnementActif = membre.AbonnementActuel != null
+                                   && membre.AbonnementActuel.ValideJusqua > DateTime.Now;
+
+            ModeAccès modeAcces;
+            Paiement paiement = null;
+
+            if (abonnementActif)
+            {
+                //  Visionnement inclus dans l’abonnement
+                modeAcces = ModeAccès.Abonnement;
+            }
+            else
+            {
+                //  Visionnement à l’unité → paiement requis
+                modeAcces = ModeAccès.A_L_Unité;
+
+                decimal prix = film.Prix;
+
+                if (membre.Compte.Solde < prix)
                 {
-                    MessageBox.Show("Aucun film ou membre sélectionné.");
+                    MessageBox.Show("Solde insuffisant. Veuillez recharger votre compte.");
                     return;
                 }
 
-                if (membre.Compte == null)
+                // Déduire le solde
+                membre.Compte.Solde -= prix;
+
+                paiement = new Paiement
                 {
-                    MessageBox.Show("Aucun compte associé à ce membre !");
-                    return;
-                }
+                    Date = DateTime.Now,
+                    Montant = prix,
+                    Sur = membre.Compte?.ParDéfaut, // si besoin
+                };
 
-                // Choix du mode d’accès selon le type de membre
-                ModeAccès modeAcces = membre.Compte.Solde > 0 ? ModeAccès.A_L_Unité : ModeAccès.Abonnement;
-
-                Paiement paiement = null;
-
-                if (modeAcces == ModeAccès.A_L_Unité)
-                {
-                    // Vérifier si le solde est suffisant
-                    decimal prix = decimal.Parse(film.Prix);
-                    if (membre.Compte.Solde < prix)
-                    {
-                        MessageBox.Show("Solde insuffisant pour un visionnement à l’unité.");
-                        return;
-                    }
-
-                    membre.Compte.Solde -= prix;
-
-                    paiement = new Paiement
-                    {
-                        Date = DateTime.Now,
-                        Montant = prix
-                    };
-                }
-
-                //  Crée la transaction de visionnement
-                var tx = new TxVisionnement(film, modeAcces, paiement, membre.Compte);
-
-                // Ajout dans le compte et dans le DataStore
-                membre.Compte.AjouterTransaction(tx);
-                DataStore.Transactions.Add(tx);
-
-                MessageBox.Show($"Visionnement de \"{film.Titre}\" lancé avec succès !",
-                                "Visionnement", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // Simule la lecture du film
-                film.Visionner();
-
-                Close();
+                DataStore.Paiements.Add(paiement);
             }
-            catch (InvalidOperationException ex)
+
+            //  Création du TxVisionnement
+            var tx = new TxVisionnement
             {
-                MessageBox.Show(ex.Message, "Erreur de transaction", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Film = film,
+                Membre = membre,
+                ModeAccès = modeAcces,
+                Date = DateTime.Now,
+                Paiement = paiement
+            };
+
+            // Ajout dans l’historique
+            membre.Compte.AjouterTransaction(tx);
+            DataStore.Transactions.Add(tx);
+
+            MessageBox.Show($"Visionnement de \"{film.Titre}\" lancé.",
+                            "Visionnement", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            //  Lancement de la vidéo
+            if (!string.IsNullOrEmpty(film.CheminFichier))
+            {
+                videoPlayer.Source = new Uri(film.CheminFichier, UriKind.RelativeOrAbsolute);
+                videoPlayer.Play();
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Erreur inattendue : {ex.Message}");
+                MessageBox.Show("Aucune source vidéo disponible.");
             }
         }
-
-        private void BtnAnnuler_Click(object sender, RoutedEventArgs e)
+        private void BtnFermer_Click(object sender, RoutedEventArgs e)
         {
+            videoPlayer.Stop();
+            new FenetreCatalogue().Show();
             this.Close();
         }
+
     }
 }
 

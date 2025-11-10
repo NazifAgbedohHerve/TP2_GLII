@@ -21,6 +21,7 @@ public class Personne {
         Pays = pays;
         TypePersonne = type;
     }
+    public Personne() { }
 
     public override string ToString() => $"{Nom} ({TypePersonne})";
 

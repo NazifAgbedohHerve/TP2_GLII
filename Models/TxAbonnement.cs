@@ -30,6 +30,12 @@ namespace TP2_GLII.Model
             }
         }
 
+        public override string ResumeTransaction()
+        {
+            string plan = AbonnementPlan?.Nom ?? "Inconnu";
+            return $"Abonnement : {plan} (valide du {ValideDepuis:yyyy-MM-dd} au {ValideJusqua:yyyy-MM-dd})";
+        }
+
 
         // Vérifie la règle UML : pas de chevauchement d’abonnement
         public bool Chevauche(TxAbonnement autre)

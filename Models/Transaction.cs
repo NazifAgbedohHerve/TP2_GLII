@@ -25,5 +25,7 @@ namespace TP2_GLII.Model
             Console.WriteLine($"Consultation de l’historique des transactions pour {membre.NomUsager}");
             return Array.Empty<Transaction>();
         }
+
+        public virtual string ResumeTransaction() => $"{Numéro} - {Date}";
     }
 }

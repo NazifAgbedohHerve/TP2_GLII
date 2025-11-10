@@ -33,7 +33,7 @@ namespace TP2_GLII.Model
         public List<Transaction> Transactions { get => transactions; set => transactions = value; }
 
         // Méthodes pour la de gestion du compte
-        public void Créditer(decimal montant)
+        public void Crediter(decimal montant)
         {
             solde += montant;
         }
@@ -53,6 +53,30 @@ namespace TP2_GLII.Model
             if (Transactions == null)
                 Transactions = new List<Transaction>();
             Transactions.Add(tx);
+        }
+
+        public void Approvisionner(decimal montant)
+        {
+            solde += montant;
+            transactions.Add(new TxApprovisionnement
+            {
+                Numéro = Guid.NewGuid().ToString(),
+                Date = DateTime.Now,
+                Montant = montant,
+                Vers = this
+            });
+        }
+
+        public void Rembourser(decimal montant)
+        {
+            solde += montant;
+            transactions.Add(new TxRemboursement
+            {
+                Numéro = Guid.NewGuid().ToString(),
+                Date = DateTime.Now,
+                Montant = montant,
+                De_ = this
+            });
         }
 
 

@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TP2_GLII.Models;
+using TP2_GLII.Views;
 
 namespace TP2_GLII
 {
@@ -19,6 +21,31 @@ namespace TP2_GLII
         public MainWindow()
         {
             InitializeComponent();
+            AutoRedirect(3000);
+        }
+
+        private async void AutoRedirect(int milliseconds)
+        {
+            await Task.Delay(milliseconds);
+            if (this.IsLoaded) // Vérifier que la fenêtre est toujours ouverte
+            {
+                RedirectToAccueil();
+            }
+        }
+
+        private void BtnEntrer_Click(object sender, RoutedEventArgs e)
+        {
+            RedirectToAccueil();
+        }
+
+        private void RedirectToAccueil()
+        {
+            // Ouvrir la fenêtre d'accueil
+            var accueil = new Views.Accuiel();
+            accueil.Show();
+
+            // Fermer cette fenêtre de bienvenue
+            this.Close();
         }
     }
 }

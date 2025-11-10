@@ -14,7 +14,10 @@ public class Catégorie {
     public List<Film> Appartient { get => appartient; set => appartient = value; }
     public List<Membre> ADesPréférences { get => a_des_préférences; set => a_des_préférences = value; }
 
-    // Constructeur
+    // Constructeurs
+
+    public Catégorie() { }
+
     public Catégorie(string numero, string nom)
     {
         this.numéro = numero;

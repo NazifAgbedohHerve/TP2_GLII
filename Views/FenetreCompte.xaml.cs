@@ -39,45 +39,45 @@ namespace TP2_GLII.Views
         {
             txtNomMembre.Text = $"{membre.Prénom} {membre.Nom}";
             txtCourriel.Text = membre.AdresseCourriel;
-            txtSolde.Text = $"Solde actuel : {membre.Possède.Solde:C2}";
+            txtSolde.Text = $"Solde actuel : {membre.Compte.Solde:C2}";
 
-            if (membre.A_Actuellement != null)
-                txtAbonnement.Text = $"Type : {membre.A_Actuellement.TypeAbonnement} - Statut : {membre.A_Actuellement.Statut}";
+            if (membre.AbonnementActuel != null)
+                txtAbonnement.Text = $"Plan : {membre.AbonnementActuel.AbonnementPlan.Nom}  (Valide jusqu’au {membre.AbonnementActuel.ValideJusqua:dd/MM/yyyy})";
             else
                 txtAbonnement.Text = "Aucun abonnement actif.";
         }
 
         private void BtnApprovisionner_Click(object sender, RoutedEventArgs e)
         {
-            membre.Possède.Créditer(10); // exemple : +10$
+            membre.Compte.Crediter(10m); // +10$
             MessageBox.Show("Compte approvisionné de 10 $", "Succès", MessageBoxButton.OK, MessageBoxImage.Information);
             ChargerInfosMembre();
         }
 
         private void BtnRembourser_Click(object sender, RoutedEventArgs e)
         {
-            if (membre.Possède.Solde > 0)
+            if (membre.Compte.Solde > 0)
             {
-                membre.Possède.Solde = 0;
-                MessageBox.Show("Demande de remboursement effectuée.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                membre.Compte.Solde = 0;
+                MessageBox.Show("Votre solde a été remboursé.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 ChargerInfosMembre();
             }
             else
             {
-                MessageBox.Show("Aucun solde à rembourser.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Aucun solde à rembourser.", "Information", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
         private void BtnSuspendre_Click(object sender, RoutedEventArgs e)
         {
-            if (membre.A_Actuellement != null)
+            if (membre.AbonnementActuel != null)
             {
                 var confirm = MessageBox.Show("Voulez-vous suspendre votre abonnement ?", "Confirmation",
-                                              MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    MessageBoxButton.YesNo, MessageBoxImage.Question);
 
                 if (confirm == MessageBoxResult.Yes)
                 {
-                    membre.A_Actuellement.Statut = "Suspendu";
+                    membre.AbonnementActuel.Statut = "Suspendu";
                     MessageBox.Show("Abonnement suspendu.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                     ChargerInfosMembre();
                 }

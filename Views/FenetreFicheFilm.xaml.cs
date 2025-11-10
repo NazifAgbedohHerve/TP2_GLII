@@ -120,9 +120,13 @@ namespace TP2_GLII.Views
 
         private void btnFermer_Click(object sender, RoutedEventArgs e)
         {
-            Close();
+            
+            new FenetreCatalogue().Show();
+            this.Close();
         }
+
     }
 }
+
 
 

@@ -34,13 +34,13 @@ namespace TP2_GLII.Views
         {
             lvHistorique.ItemsSource = null;
 
-            if (membre?.Possède?.Transactions == null)
+            if (membre?.Compte?.Transactions == null)
             {
                 lvHistorique.ItemsSource = new List<object>();
                 return;
             }
 
-            var visionnements = membre.Possède.Transactions
+            var visionnements = membre.Compte.Transactions
                 .Where(t => t is TxVisionnement)
                 .Cast<TxVisionnement>()
                 .OrderByDescending(v => v.Date)
